@@ -29,13 +29,3 @@ O objetivo do agente é maximizar sua recompensa acumulada ao longo do tempo, co
 
 
 ![Imagem da Grid](./grid.png)
-
-O algoritmo escolhido para lidar com o problema proposto é a Busca em Largura. A busca em largura (BFS, Breadth-First Search) é um algoritmo usado em grafos para percorrer ou pesquisar todos os vértices (ou nós) de um grafo de maneira sistemática e nivelada. Em vez de explorar profundamente um ramo específico do grafo, como faz a busca em profundidade (DFS), a BFS expande a busca a partir do nó inicial para todos os nós vizinhos antes de passar para os nós mais distantes.
-
-Os materiais base para a implementação do algoritmo são:
-
-https://www.geeksforgeeks.org/breadth-first-traversal-bfs-on-a-2d-array/
-
-https://www.youtube.com/watch?v=oDqjPvD54Ss
-
-https://www.youtube.com/watch?v=KiCBXu4P-2Y
