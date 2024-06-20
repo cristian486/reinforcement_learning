@@ -15,7 +15,7 @@ void RunLearningAlgorithm(double QLearningMatrix[MAX_SIZE][MAX_SIZE][NUMBER_OF_M
     unsigned int OldRow = 0, OldColumn = 0;
 
     for(int i = 0; i < MAX_ITERATIONS; i++) {
-        printf("Running the learning algorithm. Itearion %d of %d\n", i, MAX_ITERATIONS);
+        printf("Executando o algoritmo de aprendizado. Iteração %d de %d\n", i, MAX_ITERATIONS);
         while(PlayerNode->x != ExitNode->x || PlayerNode->y != ExitNode->y) {
             OldRow = PlayerNode->x;
             OldColumn = PlayerNode->y;

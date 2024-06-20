@@ -23,11 +23,12 @@ unsigned char ShowMenu() {
 
 
 void PrintQLearningMatrix(double QLearningMatrix[MAX_SIZE][MAX_SIZE][NUMBER_OF_MOVEMENTS]) {
+	printf("\t\t\tUP\t\tDOWN\t\tLEFT\t\tRIGTH\n");
 	for(int i = 0; i < MAX_SIZE; i++) {
         for(int j = 0; j < MAX_SIZE; j++) {
 			printf("Linha %d Coluna %d:\t", i, j);
             for(int m = 0; m < NUMBER_OF_MOVEMENTS; m++) {
-				printf("%02.4f\t", QLearningMatrix[i][j][m]);
+				printf("%02.4f\t\t", QLearningMatrix[i][j][m]);
             }
 			printf("\n");
         }
