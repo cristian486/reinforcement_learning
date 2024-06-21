@@ -34,9 +34,10 @@
 
     void FreeNodeArray(Node * NodeArray[]);
     void ResetNodeArray(Node * NodeArray[]);
+    void ReInitializeNodeArray(Node * NodeArray[], unsigned int MaxSize);
     void GenerateNodePosition(Node * NodeArray[], Node * Node, unsigned int MaxSize);
     void VerifyIfIsOverlapping(Node * NodeArray[], unsigned int CoordinateX, unsigned int CoordinateY);
     Node * IsPositionOccupiedByNode(Node * NodeArray[], unsigned int CoordinateX, unsigned int CoordinateY);
     void InitializeNode(Node * NodeArray[], NodeType Type, unsigned int IndexOfNodeToInitialize, unsigned int MaxSize);
-    void InitializeNodeArray(Node * NodeArray[], Node ** PlayerNode, Node ** ExitNode, unsigned int * MemoryReservationError, unsigned int MaxSize);
+    void InitializeNodeArray(Node * NodeArray[], unsigned int * MemoryReservationError, unsigned int MaxSize);
 #endif

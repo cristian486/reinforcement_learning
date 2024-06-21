@@ -14,7 +14,7 @@
         #define CLEAR_COMMAND "clear"
     #endif
 
-    #define GAMMA 0.5
+    #define GAMMA 0.1
     #define ALPHA 0.1
     #define MAX_ITERATIONS 2000000
 

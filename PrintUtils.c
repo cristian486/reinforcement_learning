@@ -15,20 +15,21 @@ unsigned char ShowMenu() {
 	printf("\t\t1 - Mostrar a matrix\n");
 	printf("\t\t2 - Mostrar a matrix de aprendizado\n");
 	printf("\t\t3 - Treinar o algoritmo\n");
-	printf("\t\t4 - Percorrer o labirinto com base no conhecimento\n");
-	printf("\t\t5 - Sair\n\t\t");
+	printf("\t\t4 - Gerar novas posições e objetos diferentes\n");
+	printf("\t\t5 - Percorrer o labirinto com base no conhecimento\n");
+	printf("\t\t6 - Sair\n\t\t");
 	scanf(" %c", &Input);
 	return Input;
 }
 
 
 void PrintQLearningMatrix(double QLearningMatrix[MAX_SIZE][MAX_SIZE][NUMBER_OF_MOVEMENTS]) {
-	printf("\t\t\tUP\t\tDOWN\t\tLEFT\t\tRIGTH\n");
+	printf("\t\t\t  UP\t\t  DOWN\t\t  LEFT\t\t  RIGTH\n");
 	for(int i = 0; i < MAX_SIZE; i++) {
         for(int j = 0; j < MAX_SIZE; j++) {
 			printf("Linha %d Coluna %d:\t", i, j);
             for(int m = 0; m < NUMBER_OF_MOVEMENTS; m++) {
-				printf("%02.4f\t\t", QLearningMatrix[i][j][m]);
+				printf("%02.6f         ", QLearningMatrix[i][j][m]);
             }
 			printf("\n");
         }

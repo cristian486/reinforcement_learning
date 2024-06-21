@@ -1,6 +1,19 @@
 #include "NodeUtils.h"
 
-void InitializeNodeArray(Node * NodeArray[], Node ** PlayerNode, Node ** ExitNode, unsigned int * MemoryReservationError, unsigned int MaxSize){
+
+void ReInitializeNodeArray(Node * NodeArray[], unsigned int MaxSize) {
+    for(int i = 1; i < MAX_NODE_ARRAY_SIZE; i++) {
+        if((i + 1) == MAX_NODE_ARRAY_SIZE)
+            InitializeNode(NodeArray, EXIT, i, MaxSize);
+        else {
+            NodeType Type = rand() % 3 + 1;
+            InitializeNode(NodeArray, Type, i, MaxSize);
+        }
+    }
+    QuickSort(NodeArray, 0, MAX_NODE_ARRAY_SIZE - 1);
+}
+
+void InitializeNodeArray(Node * NodeArray[], unsigned int * MemoryReservationError, unsigned int MaxSize) {
     for(int i = 0; i < MAX_NODE_ARRAY_SIZE; i++)
         NodeArray[i] = NULL;
 
@@ -21,51 +34,47 @@ void InitializeNodeArray(Node * NodeArray[], Node ** PlayerNode, Node ** ExitNod
             InitializeNode(NodeArray, Type, i, MaxSize);
         }
     }
-
-    *PlayerNode = NodeArray[0];
-    *ExitNode = NodeArray[MAX_NODE_ARRAY_SIZE - 1];
-
-    QuickSort(NodeArray, 0, MAX_NODE_ARRAY_SIZE - 1);       
+    QuickSort(NodeArray, 0, MAX_NODE_ARRAY_SIZE - 1);
 }
 
 void InitializeNode(Node * NodeArray[], NodeType Type, unsigned int IndexOfNodeToInitialize, unsigned int MaxSize) {
-    Node * node = NodeArray[IndexOfNodeToInitialize];
+    Node * CurrentNode = NodeArray[IndexOfNodeToInitialize];
     switch (Type) {
         case PLAYER:
-            node->x = 0;
-            node->y = 0;
-            node->letter = PLAYER_LETTER;
-            node->active = 1;
-            node->backgroud_color = "\033[42m";
+            CurrentNode->x = 0;
+            CurrentNode->y = 0;
+            CurrentNode->letter = PLAYER_LETTER;
+            CurrentNode->active = 1;
+            CurrentNode->backgroud_color = "\033[42m";
             break;
         case ZOMBIE:
-            GenerateNodePosition(NodeArray, node, MaxSize);
-            node->letter = ZOMBIE_LETTER;
-            node->active = 1;
-            node->backgroud_color = "\033[41m";
-            node->points = -10.0;
+            GenerateNodePosition(NodeArray, CurrentNode, MaxSize);
+            CurrentNode->letter = ZOMBIE_LETTER;
+            CurrentNode->active = 1;
+            CurrentNode->backgroud_color = "\033[41m";
+            CurrentNode->points = -20.0;
             break;
         case SUPPLY:
-            GenerateNodePosition(NodeArray, node, MaxSize);
-            node->letter = SUPPLY_LETTER;
-            node->active = 1;
-            node->backgroud_color = "\033[44m";
-            node->points = 10.0;
+            GenerateNodePosition(NodeArray, CurrentNode, MaxSize);
+            CurrentNode->letter = SUPPLY_LETTER;
+            CurrentNode->active = 1;
+            CurrentNode->backgroud_color = "\033[44m";
+            CurrentNode->points = 20.0;
             break;
         case TRAP:
-            GenerateNodePosition(NodeArray, node, MaxSize);
-            node->letter = TRAP_LETTER;
-            node->active = 1;
-            node->backgroud_color = "\x1b[48;5;244m";
-            node->points = -10.0;
+            GenerateNodePosition(NodeArray, CurrentNode, MaxSize);
+            CurrentNode->letter = TRAP_LETTER;
+            CurrentNode->active = 1;
+            CurrentNode->backgroud_color = "\x1b[48;5;244m";
+            CurrentNode->points = -20.0;
             break;
         case EXIT:
-            node->x = MaxSize - 1;
-            node->y = MaxSize - 1;
-            node->letter = 'X';
-            node->points = 100.0;
-            node->backgroud_color = "\033[47m";
-            node->active = 1;
+            CurrentNode->x = MaxSize - 1;
+            CurrentNode->y = MaxSize - 1;
+            CurrentNode->letter = 'X';
+            CurrentNode->points = 30.0;
+            CurrentNode->backgroud_color = "\033[47m";
+            CurrentNode->active = 1;
             break;
     }
 }

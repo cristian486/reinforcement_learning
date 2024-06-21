@@ -1,5 +1,6 @@
 #include "LearningUtils.h"
 
+double EXPLORATION_RATE = 0.9;
 
 void InitializeLearningMatrix(double QLearningMatrix[MAX_SIZE][MAX_SIZE][NUMBER_OF_MOVEMENTS]) {
     for(int i = 0; i < MAX_SIZE; i++) {
@@ -12,15 +13,16 @@ void InitializeLearningMatrix(double QLearningMatrix[MAX_SIZE][MAX_SIZE][NUMBER_
 }
 
 void RunLearningAlgorithm(double QLearningMatrix[MAX_SIZE][MAX_SIZE][NUMBER_OF_MOVEMENTS], Node * NodeArray[], Node * PlayerNode, Node * ExitNode) {
+    EXPLORATION_RATE = 0.9;
     unsigned int OldRow = 0, OldColumn = 0;
 
     for(int i = 0; i < MAX_ITERATIONS; i++) {
-        printf("Executando o algoritmo de aprendizado. Iteração %d de %d\n", i, MAX_ITERATIONS);
+        printf("Executando o algoritmo de aprendizado. Iteração %d de %d\n", (i + 1), MAX_ITERATIONS);
         while(PlayerNode->x != ExitNode->x || PlayerNode->y != ExitNode->y) {
             OldRow = PlayerNode->x;
             OldColumn = PlayerNode->y;
 
-            Movement MoveToMake = ChooseMovement(QLearningMatrix, PlayerNode->x, PlayerNode->y);
+            Movement MoveToMake = ChooseMovement(QLearningMatrix, PlayerNode->x, PlayerNode->y, EXPLORATION_RATE);
 
             MovementPlayer(MoveToMake, PlayerNode);
 
@@ -33,9 +35,14 @@ void RunLearningAlgorithm(double QLearningMatrix[MAX_SIZE][MAX_SIZE][NUMBER_OF_M
             double UpdateRuleValue = QLearningMatrix[OldRow][OldColumn][MoveToMake] + (ALPHA * TemporalDifferenceError);
             QLearningMatrix[OldRow][OldColumn][MoveToMake] = UpdateRuleValue;
         }
+
+        if(EXPLORATION_RATE > 0.3)
+            EXPLORATION_RATE -= 0.002;
+        
         ResetNodeArray(NodeArray);
     }
 
+    sleep(10);
 }
 
 
@@ -52,7 +59,7 @@ double GetMaxValueFromActions(double QLearningMatrix[MAX_SIZE][MAX_SIZE][NUMBER_
 
 
 double GetCurrentReward(Node * NodeArray[], unsigned int CoordinateX, unsigned int CoordinateY) {
-    double Points = -1.0;
+    double Points = 0.0;
 
     for(int i = 1; i < MAX_NODE_ARRAY_SIZE; i++) {
 

@@ -15,7 +15,7 @@
 	#define CLEAR_COMMAND "clear"
 #endif
 
-void HandleUserInput(unsigned char UserOption, double QLearningMatrix[MAX_SIZE][MAX_SIZE][NUMBER_OF_MOVEMENTS], Node * NodeArray[], Node * PlayerNode, Node * ExitNode);
+void HandleUserInput(unsigned char UserOption, double QLearningMatrix[MAX_SIZE][MAX_SIZE][NUMBER_OF_MOVEMENTS], Node * NodeArray[], Node * PlayerNode, Node * ExitNode, int * MemoryReservationError);
 
 int main(const int argc, const char * argv[]) {
 	srand(time(NULL));
@@ -29,12 +29,14 @@ int main(const int argc, const char * argv[]) {
 
 	InitializeLearningMatrix(QLearningMatrix);
 	
-	InitializeNodeArray(NodeArray, &PlayerNode, &ExitNode, &MemoryReservationError, MAX_SIZE);
+	InitializeNodeArray(NodeArray, &MemoryReservationError, MAX_SIZE);
+	PlayerNode = NodeArray[0];
+	ExitNode = NodeArray[MAX_NODE_ARRAY_SIZE - 1];
 
-	while(!MemoryReservationError && UserOption != '5') {
+	while(!MemoryReservationError && UserOption != '6') {
 		UserOption = ShowMenu();
 		system(CLEAR_COMMAND);
-		HandleUserInput(UserOption, QLearningMatrix, NodeArray, PlayerNode, ExitNode);
+		HandleUserInput(UserOption, QLearningMatrix, NodeArray, PlayerNode, ExitNode, &MemoryReservationError);
 		system(CLEAR_COMMAND);
 	}
 
@@ -44,7 +46,7 @@ int main(const int argc, const char * argv[]) {
 	return 0;
 }
 
-void HandleUserInput(unsigned char UserOption, double QLearningMatrix[MAX_SIZE][MAX_SIZE][NUMBER_OF_MOVEMENTS], Node * NodeArray[], Node * PlayerNode, Node * ExitNode) {
+void HandleUserInput(unsigned char UserOption, double QLearningMatrix[MAX_SIZE][MAX_SIZE][NUMBER_OF_MOVEMENTS], Node * NodeArray[], Node * PlayerNode, Node * ExitNode, int * MemoryReservationError) {
 	switch (UserOption) {
 		case '1':
 			PrintMatrix(NodeArray);
@@ -60,9 +62,13 @@ void HandleUserInput(unsigned char UserOption, double QLearningMatrix[MAX_SIZE][
 			RunLearningAlgorithm(QLearningMatrix, NodeArray, PlayerNode, ExitNode);
 			break;
 		case '4':
-			RunBasedOnKnowledge(QLearningMatrix, NodeArray, PlayerNode, ExitNode);
+			ReInitializeNodeArray(NodeArray, MAX_SIZE);
+			InitializeLearningMatrix(QLearningMatrix);
 			break;
 		case '5':
+			RunBasedOnKnowledge(QLearningMatrix, NodeArray, PlayerNode, ExitNode);
+			break;
+		case '6':
 			break;
 		default:
 			printf("Informação fornecida não reconhecida!\n");
