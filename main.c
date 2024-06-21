@@ -5,7 +5,7 @@
 #include "NodeUtils.h"
 #include "LearningUtils.h"
 
-// gcc -o ReinforcmentLearning main.c PrintUtils.c  NodeUtils.c SortUtils.c MovementUtils.c LearningUtils.c
+// gcc -o ReinforcmentLearning main.c PrintUtils.c  NodeUtils.c SortUtils.c MovementUtils.c LearningUtils.c -lm
 
 #ifdef _WIN32
 	#include <windows.h>

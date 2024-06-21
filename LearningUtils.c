@@ -1,6 +1,6 @@
 #include "LearningUtils.h"
 
-double EXPLORATION_RATE = 0.9;
+double EXPLORATION_RATE = MAX_EXPLORATION_RATE;
 
 void InitializeLearningMatrix(double QLearningMatrix[MAX_SIZE][MAX_SIZE][NUMBER_OF_MOVEMENTS]) {
     for(int i = 0; i < MAX_SIZE; i++) {
@@ -13,12 +13,15 @@ void InitializeLearningMatrix(double QLearningMatrix[MAX_SIZE][MAX_SIZE][NUMBER_
 }
 
 void RunLearningAlgorithm(double QLearningMatrix[MAX_SIZE][MAX_SIZE][NUMBER_OF_MOVEMENTS], Node * NodeArray[], Node * PlayerNode, Node * ExitNode) {
-    EXPLORATION_RATE = 0.9;
+    EXPLORATION_RATE = MAX_EXPLORATION_RATE;
     unsigned int OldRow = 0, OldColumn = 0;
 
-    for(int i = 0; i < MAX_ITERATIONS; i++) {
-        printf("Executando o algoritmo de aprendizado. Iteração %d de %d\n", (i + 1), MAX_ITERATIONS);
-        while(PlayerNode->x != ExitNode->x || PlayerNode->y != ExitNode->y) {
+    for(int episode = 0; episode < MAX_ITERATIONS; episode++) {
+
+        printf("Executando o algoritmo de aprendizado. Iteração %d de %d - EXPLORATION_RATE: %.2f\n", (episode + 1), MAX_ITERATIONS, EXPLORATION_RATE);
+
+
+        for(int step = 0; step < MAX_STEPS_PER_EPISODE; step++) {
             OldRow = PlayerNode->x;
             OldColumn = PlayerNode->y;
 
@@ -30,19 +33,17 @@ void RunLearningAlgorithm(double QLearningMatrix[MAX_SIZE][MAX_SIZE][NUMBER_OF_M
             
             double MaxValueReward = GetMaxValueFromActions(QLearningMatrix, PlayerNode->x, PlayerNode->x);
 
-            double BellmanEquation = CurrentReward + (GAMMA * MaxValueReward);
-            double TemporalDifferenceError = BellmanEquation - QLearningMatrix[OldRow][OldColumn][MoveToMake];
-            double UpdateRuleValue = QLearningMatrix[OldRow][OldColumn][MoveToMake] + (ALPHA * TemporalDifferenceError);
-            QLearningMatrix[OldRow][OldColumn][MoveToMake] = UpdateRuleValue;
+            QLearningMatrix[OldRow][OldColumn][MoveToMake] = QLearningMatrix[OldRow][OldColumn][MoveToMake] + ALPHA * (CurrentReward + GAMMA * MaxValueReward - QLearningMatrix[OldRow][OldColumn][MoveToMake]);
+
+            if(PlayerHaveFinished(NodeArray, PlayerNode->x, PlayerNode->y))
+                break;
         }
 
-        if(EXPLORATION_RATE > 0.3)
-            EXPLORATION_RATE -= 0.002;
-        
+
+        EXPLORATION_RATE = MIN_EXPLORATION_RATE + (MAX_EXPLORATION_RATE - MIN_EXPLORATION_RATE) * exp(-EXPLORATION_RATE_DECAY * episode);
+
         ResetNodeArray(NodeArray);
     }
-
-    sleep(10);
 }
 
 
@@ -77,13 +78,25 @@ double GetCurrentReward(Node * NodeArray[], unsigned int CoordinateX, unsigned i
 }
 
 void RunBasedOnKnowledge(double QLearningMatrix[MAX_SIZE][MAX_SIZE][NUMBER_OF_MOVEMENTS], Node * NodeArray[], Node * PlayerNode, Node * ExitNode) { 
+    int Step = 0;
     while(PlayerNode->x != ExitNode->x || PlayerNode->y != ExitNode->y) {
+        Step++;
         PrintMatrix(NodeArray);
         sleep(1);
         system(CLEAR_COMMAND);
         Movement MoveToMake = ChooseBetterMovement(QLearningMatrix, PlayerNode->x, PlayerNode->y);
         MovementPlayer(MoveToMake, PlayerNode);
         VerifyIfIsOverlapping(NodeArray, PlayerNode->x, PlayerNode->y);
+        if(Step == MAX_STEPS_PER_EPISODE)
+            break;
     }
     ResetNodeArray(NodeArray);
+}
+
+int PlayerHaveFinished(Node * NodeArray[], unsigned int CoordinateX, unsigned int CoordinateY) {
+    for(int i = 1; i < MAX_NODE_ARRAY_SIZE; i++)
+        if(NodeArray[i]->x == CoordinateX && NodeArray[i]->y == CoordinateY && (NodeArray[i]->letter == ZOMBIE_LETTER || NodeArray[i]->letter == TRAP_LETTER || NodeArray[i]->letter == EXIT_LETTER))
+            return 1;
+
+    return 0;
 }

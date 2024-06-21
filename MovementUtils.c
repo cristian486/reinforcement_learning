@@ -61,7 +61,7 @@ Movement ChooseBetterMovement(double QLearningMatrix[MAX_SIZE][MAX_SIZE][NUMBER_
 Movement ChooseMovement(double QLearningMatrix[MAX_SIZE][MAX_SIZE][NUMBER_OF_MOVEMENTS], unsigned int CoordinateX, unsigned int CoordinateY, double EXPLORATION_RATE) {
     double RandomNumber = rand() / (double) RAND_MAX;
 
-    if(RandomNumber < EXPLORATION_RATE)
+    if(RandomNumber <= EXPLORATION_RATE)
         return ChooseRandomMovement(CoordinateX, CoordinateY);
 
     return ChooseBetterMovement(QLearningMatrix,CoordinateX, CoordinateY);
