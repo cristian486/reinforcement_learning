@@ -15,11 +15,11 @@
         #define CLEAR_COMMAND "clear"
     #endif
 
-    #define GAMMA 0.4
+    #define GAMMA 0.9
     #define ALPHA 0.1
-    #define MAX_EPISODES 1000000
-    #define MAX_STEPS_PER_EPISODE (MAX_SIZE * MAX_SIZE)
-    #define EXPLORATION_RATE_DECAY 0.0001
+    #define MAX_EPISODES 100000
+    #define MAX_STEPS_PER_EPISODE ((MAX_SIZE * MAX_SIZE) + 10)
+    #define EXPLORATION_RATE_DECAY 0.001
     #define MIN_EXPLORATION_RATE 0.2
     #define MAX_EXPLORATION_RATE 1.0
 

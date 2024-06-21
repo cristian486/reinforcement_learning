@@ -5,7 +5,7 @@
     #include <stdlib.h>
     #include <math.h>
     
-    #define MAX_SIZE       8
+    #define MAX_SIZE       6
     #define PLAYER_LETTER 'P'
     #define ZOMBIE_LETTER 'Z'
     #define SUPPLY_LETTER 'S'

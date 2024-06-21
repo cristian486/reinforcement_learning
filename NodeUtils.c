@@ -72,7 +72,7 @@ void InitializeNode(Node * NodeArray[], NodeType Type, unsigned int IndexOfNodeT
             CurrentNode->x = MaxSize - 1;
             CurrentNode->y = MaxSize - 1;
             CurrentNode->letter = 'X';
-            CurrentNode->points = 30.0;
+            CurrentNode->points = 100.0;
             CurrentNode->backgroud_color = "\033[47m";
             CurrentNode->active = 1;
             break;
