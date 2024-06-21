@@ -18,8 +18,7 @@ void RunLearningAlgorithm(double QLearningMatrix[MAX_SIZE][MAX_SIZE][NUMBER_OF_M
 
     for(int episode = 0; episode < MAX_ITERATIONS; episode++) {
 
-        printf("Executando o algoritmo de aprendizado. Iteração %d de %d - EXPLORATION_RATE: %.2f\n", (episode + 1), MAX_ITERATIONS, EXPLORATION_RATE);
-
+        printf("Executando o algoritmo de aprendizado. Iteração %d de %d\n", (episode + 1), MAX_ITERATIONS);
 
         for(int step = 0; step < MAX_STEPS_PER_EPISODE; step++) {
             OldRow = PlayerNode->x;
@@ -60,7 +59,7 @@ double GetMaxValueFromActions(double QLearningMatrix[MAX_SIZE][MAX_SIZE][NUMBER_
 
 
 double GetCurrentReward(Node * NodeArray[], unsigned int CoordinateX, unsigned int CoordinateY) {
-    double Points = 0.0;
+    double Points = -1.0;
 
     for(int i = 1; i < MAX_NODE_ARRAY_SIZE; i++) {
 

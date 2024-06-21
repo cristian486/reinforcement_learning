@@ -44,18 +44,30 @@ Movement ChooseRandomMovement(unsigned int CoordinateX, unsigned int CoordinateY
 }
 
 Movement ChooseBetterMovement(double QLearningMatrix[MAX_SIZE][MAX_SIZE][NUMBER_OF_MOVEMENTS], unsigned int CoordinateX, unsigned int CoordinateY) {
-    double MaxValue = -1.0;
-    unsigned int BetterMovementIndex = 0;
+    double MaxValue = -1000.0;
+    unsigned int MaxValueAppears = 0;
 
     for(int i = 0; i < NUMBER_OF_MOVEMENTS; i++) {
 
-        if(QLearningMatrix[CoordinateX][CoordinateY][i] >= MaxValue && IsMovementValid((Movement) i, CoordinateX, CoordinateY)) {
-            BetterMovementIndex = i;
+        if(!IsMovementValid((Movement) i, CoordinateX, CoordinateY))
+            continue;
+
+        if(QLearningMatrix[CoordinateX][CoordinateY][i] > MaxValue) {
+            MaxValueAppears = 1;
             MaxValue = QLearningMatrix[CoordinateX][CoordinateY][i];
-        }
+
+        } else if(QLearningMatrix[CoordinateX][CoordinateY][i] == MaxValue)
+            MaxValueAppears++;
     }
 
-    return (Movement) BetterMovementIndex;
+    unsigned int BetterMovementArray[MaxValueAppears], Index = 0;
+
+    for(int i = 0; i < NUMBER_OF_MOVEMENTS; i++)
+        if(QLearningMatrix[CoordinateX][CoordinateY][i] == MaxValue && IsMovementValid((Movement) i, CoordinateX, CoordinateY))
+            BetterMovementArray[Index++] = i;
+
+
+    return (Movement) BetterMovementArray[rand() % MaxValueAppears];
 }
 
 Movement ChooseMovement(double QLearningMatrix[MAX_SIZE][MAX_SIZE][NUMBER_OF_MOVEMENTS], unsigned int CoordinateX, unsigned int CoordinateY, double EXPLORATION_RATE) {
