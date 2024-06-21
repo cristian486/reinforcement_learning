@@ -52,21 +52,21 @@ void InitializeNode(Node * NodeArray[], NodeType Type, unsigned int IndexOfNodeT
             CurrentNode->letter = ZOMBIE_LETTER;
             CurrentNode->active = 1;
             CurrentNode->backgroud_color = "\033[41m";
-            CurrentNode->points = -20.0;
+            CurrentNode->points = -10.0;
             break;
         case SUPPLY:
             GenerateNodePosition(NodeArray, CurrentNode, MaxSize);
             CurrentNode->letter = SUPPLY_LETTER;
             CurrentNode->active = 1;
             CurrentNode->backgroud_color = "\033[44m";
-            CurrentNode->points = 20.0;
+            CurrentNode->points = 10.0;
             break;
         case TRAP:
             GenerateNodePosition(NodeArray, CurrentNode, MaxSize);
             CurrentNode->letter = TRAP_LETTER;
             CurrentNode->active = 1;
             CurrentNode->backgroud_color = "\x1b[48;5;244m";
-            CurrentNode->points = -20.0;
+            CurrentNode->points = -10.0;
             break;
         case EXIT:
             CurrentNode->x = MaxSize - 1;

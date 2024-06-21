@@ -1,7 +1,5 @@
 #include "LearningUtils.h"
 
-double EXPLORATION_RATE = MAX_EXPLORATION_RATE;
-
 void InitializeLearningMatrix(double QLearningMatrix[MAX_SIZE][MAX_SIZE][NUMBER_OF_MOVEMENTS]) {
     for(int i = 0; i < MAX_SIZE; i++) {
         for(int j = 0; j < MAX_SIZE; j++) {
@@ -13,12 +11,12 @@ void InitializeLearningMatrix(double QLearningMatrix[MAX_SIZE][MAX_SIZE][NUMBER_
 }
 
 void RunLearningAlgorithm(double QLearningMatrix[MAX_SIZE][MAX_SIZE][NUMBER_OF_MOVEMENTS], Node * NodeArray[], Node * PlayerNode, Node * ExitNode) {
-    EXPLORATION_RATE = MAX_EXPLORATION_RATE;
+    double EXPLORATION_RATE = MAX_EXPLORATION_RATE;
     unsigned int OldRow = 0, OldColumn = 0;
 
-    for(int episode = 0; episode < MAX_ITERATIONS; episode++) {
+    for(int episode = 0; episode < MAX_EPISODES; episode++) {
 
-        printf("Executando o algoritmo de aprendizado. Iteração %d de %d\n", (episode + 1), MAX_ITERATIONS);
+        printf("Executando o algoritmo de aprendizado. Iteração %d de %d\n", (episode + 1), MAX_EPISODES);
 
         for(int step = 0; step < MAX_STEPS_PER_EPISODE; step++) {
             OldRow = PlayerNode->x;
@@ -30,7 +28,7 @@ void RunLearningAlgorithm(double QLearningMatrix[MAX_SIZE][MAX_SIZE][NUMBER_OF_M
 
             double CurrentReward = GetCurrentReward(NodeArray, PlayerNode->x, PlayerNode->y);
             
-            double MaxValueReward = GetMaxValueFromActions(QLearningMatrix, PlayerNode->x, PlayerNode->x);
+            double MaxValueReward = GetMaxValueFromActions(QLearningMatrix, PlayerNode->x, PlayerNode->y);
 
             QLearningMatrix[OldRow][OldColumn][MoveToMake] = QLearningMatrix[OldRow][OldColumn][MoveToMake] + ALPHA * (CurrentReward + GAMMA * MaxValueReward - QLearningMatrix[OldRow][OldColumn][MoveToMake]);
 
@@ -77,16 +75,14 @@ double GetCurrentReward(Node * NodeArray[], unsigned int CoordinateX, unsigned i
 }
 
 void RunBasedOnKnowledge(double QLearningMatrix[MAX_SIZE][MAX_SIZE][NUMBER_OF_MOVEMENTS], Node * NodeArray[], Node * PlayerNode, Node * ExitNode) { 
-    int Step = 0;
-    while(PlayerNode->x != ExitNode->x || PlayerNode->y != ExitNode->y) {
-        Step++;
+    for(int step = 0; step < MAX_STEPS_PER_EPISODE; step++) {
         PrintMatrix(NodeArray);
         sleep(1);
         system(CLEAR_COMMAND);
         Movement MoveToMake = ChooseBetterMovement(QLearningMatrix, PlayerNode->x, PlayerNode->y);
         MovementPlayer(MoveToMake, PlayerNode);
         VerifyIfIsOverlapping(NodeArray, PlayerNode->x, PlayerNode->y);
-        if(Step == MAX_STEPS_PER_EPISODE)
+        if(PlayerHaveFinished(NodeArray, PlayerNode->x, PlayerNode->y))
             break;
     }
     ResetNodeArray(NodeArray);

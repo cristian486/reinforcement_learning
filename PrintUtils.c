@@ -29,7 +29,7 @@ void PrintQLearningMatrix(double QLearningMatrix[MAX_SIZE][MAX_SIZE][NUMBER_OF_M
         for(int j = 0; j < MAX_SIZE; j++) {
 			printf("Linha %d Coluna %d:\t", i, j);
             for(int m = 0; m < NUMBER_OF_MOVEMENTS; m++) {
-				printf("%02.6f         ", QLearningMatrix[i][j][m]);
+				printf("%0.5f         ", QLearningMatrix[i][j][m]);
             }
 			printf("\n");
         }
